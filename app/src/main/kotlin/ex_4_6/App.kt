@@ -10,6 +10,32 @@ class App {
         }
 }
 
+fun <T> List<T>.head(): T =
+        if (this.isEmpty())
+            throw IllegalArgumentException("head called on empty list")
+        else
+            this[0]
+
+fun <T> List<T>.tail(): List<T> =
+        if (this.isEmpty())
+            throw IllegalArgumentException("tail called on empty list")
+        else
+            this.drop(1)
+
+fun prepend(c: Char, s: String): String = "$c$s"
+
+fun <T, U> foldRight(list: List<T>, identity: U, f: (T, U) -> U): U =
+    if (list.isEmpty())
+        identity
+    else
+        f(list.head(), foldRight(list.tail(), identity, f))
+		
+fun string(list: List<Char>): String =
+    foldRight(list, "", { c, s -> prepend(c, s) })		
+		
+
 fun main() {
     println(App().greeting)
+	
+	println(string(listOf('a','b','c','d','e')))
 }
